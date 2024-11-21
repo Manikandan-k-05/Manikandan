@@ -2,6 +2,7 @@ package bean;
 
 public class PaymentBean {
     private String transactionId;
+    private int userId;
     private String productId;
     private String firstName;
     private String lastName;
@@ -22,7 +23,13 @@ public class PaymentBean {
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
+    public int getUserId() {
+        return userId;
+    }
 
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
     public String getProductId() {
         return productId;
     }
