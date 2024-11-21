@@ -10,7 +10,7 @@ if (email == null) {
 	return; // Exit the page
 }
 
-out.print(email); // Display the email if session is valid
+//out.print(email); // Display the email if session is valid
 
 // Fetch the data
 ProductDAO productDAO = new ProductDAO();
@@ -83,10 +83,11 @@ int totalProducts = productDAO.getCountProducts(); // Assuming the method is imp
 						href="categoryManage.jsp">Category</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="productManage.jsp">Products</a></li>
-					
-					<li class="nav-item"><a class="nav-link"
-						href="customer.jsp">Customers</a></li>
-					
+
+					<li class="nav-item"><a class="nav-link" href="customer.jsp">Customers</a></li>
+
+					<li class="nav-item"><a class="nav-link" href="viewOrder.jsp">View Orders</a></li>
+
 					<li class="nav-item"><a class="nav-link" href="logout.jsp">Logout</a></li>
 				</ul>
 			</div>
@@ -112,7 +113,8 @@ int totalProducts = productDAO.getCountProducts(); // Assuming the method is imp
 							</div>
 							<div class="card-body">
 								<h3>
-									&#8377; <%=20000%></h3>
+									&#8377;
+									<%=20000%></h3>
 								<!-- Display total sales -->
 								<p>In the last month</p>
 							</div>

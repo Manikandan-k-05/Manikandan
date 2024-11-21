@@ -72,12 +72,18 @@ try {
                     <h4 class="text-danger">Sports World Admin</h4>
                 </div>
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="admin.jsp">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="categoryManage.jsp">Category</a></li>
-                    <li class="nav-item"><a class="nav-link" href="productManage.jsp">Products</a></li>
-                    <li class="nav-item"><a class="nav-link" href="customer.jsp">Customers</a></li>
-                    <li class="nav-item"><a class="nav-link" href="logout.jsp">Logout</a></li>
-                </ul>
+					<li class="nav-item"><a class="nav-link" href="admin.jsp">Dashboard</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="categoryManage.jsp">Category</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="productManage.jsp">Products</a></li>
+
+					<li class="nav-item"><a class="nav-link" href="customer.jsp">Customers</a></li>
+
+					<li class="nav-item"><a class="nav-link" href="viewOrder.jsp">View Orders</a></li>
+
+					<li class="nav-item"><a class="nav-link" href="logout.jsp">Logout</a></li>
+				</ul>
             </div>
 
             <!-- Main Content -->

@@ -1,3 +1,5 @@
+<%@page import="dao.PaymentDAO"%>
+<%@page import="bean.PaymentBean"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="net.authorize.api.contract.v1.*, net.authorize.api.controller.*, net.authorize.api.controller.base.ApiOperationBase"%>
 <%@ page import="java.util.*, java.math.*"%>
@@ -219,6 +221,26 @@
 
             // Handle the response
             if (res != null && res.getMessages() != null && res.getMessages().getResultCode() == MessageTypeEnum.OK) {
+            	
+            	// Create PaymentBean object and set values
+                PaymentBean payment = new PaymentBean();
+                payment.setTransactionId(res.getTransactionResponse().getTransId());
+                payment.setProductId(productId); // Capture the product ID from the request
+                payment.setFirstName(firstName);
+                payment.setLastName(lastName);
+                payment.setAddress(address);
+                payment.setCity(city);
+                payment.setState(state);
+                payment.setZip(zip);
+                payment.setCountry(country);
+                payment.setPhone(phone);
+                payment.setAmount(paymentAmount);
+                payment.setPaymentStatus("Success");
+
+                // Save payment details to the database
+                PaymentDAO paymentDAO = new PaymentDAO();
+                boolean isSaved = paymentDAO.savePaymentDetails(payment);
+
                 out.println("<div class='container'>");
                 out.println("<h3 class='success'>Payment Successful!</h3>");
                 out.println("<div class='transaction-info'>");
@@ -227,7 +249,11 @@
                 out.println("<p><strong>Address:</strong> " + billTo.getAddress() + ", " + billTo.getCity() + "</p>");
                 out.println("<p><strong>State/Province:</strong> " + billTo.getState() + ", <strong>Zip:</strong> " + billTo.getZip() + "</p>");
                 out.println("<p><strong>Country:</strong> " + billTo.getCountry() + ", <strong>Phone:</strong> " + billTo.getPhoneNumber() + "</p>");
-                out.println("</div></div>");
+                out.println("</div>");
+                
+             // Button to navigate to the Order History Page
+                out.println("<button class='button' onclick=\"window.location.href='orderHistory.jsp';\">View Order History</button>");
+                out.println("</div>");
             } else {
                 out.println("<div class='container'><h3 class='error'>Payment Failed</h3>");
                 if (res != null && res.getMessages() != null) {

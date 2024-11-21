@@ -45,6 +45,24 @@ public class ProductDAO {
 				ProductBean(rs.getInt("productId"), rs.getString("productName"), rs.getString("category"), rs.getDouble("price"), rs.getString("stock"), rs.getString("description"), rs.getString("productImage")); } }
 				  return null;
 				  }
+		
+		public boolean updateProduct(ProductBean product) throws SQLException {
+		    String sql = "UPDATE product SET productName = ?, category = ?, price = ?, stock = ?, description = ?, productImage = ? WHERE productId = ?";
+		    try (Connection conn = DBconnection.getConnection();
+		         PreparedStatement stmt = conn.prepareStatement(sql)) {
+		        
+		        stmt.setString(1, product.getProductName());
+		        stmt.setString(2, product.getCategory());
+		        stmt.setDouble(3, product.getPrice());
+		        stmt.setString(4, product.getStock());
+		        stmt.setString(5, product.getDescription());
+		        stmt.setString(6, product.getProductImage());
+		        stmt.setInt(7, product.getProductId());
+		        
+		        int rowsUpdated = stmt.executeUpdate();
+		        return rowsUpdated > 0; // Return true if product was updated successfully
+		    }
+		}
 	
 		
 
