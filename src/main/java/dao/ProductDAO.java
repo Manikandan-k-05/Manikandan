@@ -307,8 +307,8 @@ public class ProductDAO {
 	             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
 	            // Set the query parameter
-	            stmt.setString(1, "%" + query + "%");
-
+  	            stmt.setString(1, "%" + query + "%");
+ 
 	            try (ResultSet rs = stmt.executeQuery()) {
 	                while (rs.next()) {
 	                    ProductBean product = new ProductBean();
@@ -319,7 +319,7 @@ public class ProductDAO {
 	                    product.setDescription(rs.getString("description"));
 	                    // Add the product to the list
 	                    productList.add(product);
-	                }
+	                }  
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();

@@ -13,6 +13,7 @@ public class PaymentBean {
     private String country;
     private String phone;
     private double amount;
+    private int quantity;
     private String paymentStatus;
 
     // Getters and Setters
@@ -108,6 +109,13 @@ public class PaymentBean {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getPaymentStatus() {

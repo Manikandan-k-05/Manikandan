@@ -1,3 +1,5 @@
+<%@page import="bean.OrderBean"%>
+<%@page import="dao.OrderDAO"%>
 <%@page import="dao.PaymentDAO , dao.UserRegistrationDAO"%>
 <%@page import="bean.PaymentBean"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -141,10 +143,28 @@ p {
 		out.println("<div class='container'><h3 class='error'>User not found.</h3></div>");
 		return;
 	}
+	
+ 	String quantityStr = request.getParameter("quantity");
+	int quantity = 1; // Default to 1 if not provided
+
+	if (quantityStr != null && !quantityStr.isEmpty()) {
+	    try {
+	        quantity = Integer.parseInt(quantityStr);
+	        if (quantity <= 0) {
+	            out.println("<div class='container'><h3 class='error'>Invalid quantity. Please enter a valid number.</h3></div>");
+	            return;
+	        }
+	    } catch (NumberFormatException e) {
+	        out.println("<div class='container'><h3 class='error'>Invalid quantity format.</h3></div>");
+	        return;
+	    }
+	}
+
 
 	// Convert INR to USD
 	String targetCurrency = "USD";
-	int paymentAmount = 0;
+	 //int paymentAmount = 0; 
+	int paymentAmount = Integer.parseInt(amount) * quantity;
 	int amountInUSD = 0; // Initialize the amountInUSD to a default value
 
 	// Step 1: Convert INR to USD
@@ -265,7 +285,7 @@ p {
 
 			// Handle the response
 			if (res != null && res.getMessages() != null && res.getMessages().getResultCode() == MessageTypeEnum.OK) {
-		// Create PaymentBean object and set values
+				
 		// Create PaymentBean object and set values
 		PaymentBean payment = new PaymentBean();
 		payment.setTransactionId(res.getTransactionResponse().getTransId());
@@ -279,12 +299,24 @@ p {
 		payment.setCountry(country);
 		payment.setPhone(phone);
 		payment.setAmount(paymentAmount);
+		payment.setQuantity(quantity);
 		payment.setPaymentStatus("Success");
 		payment.setUserId(userID); // Use the userID when saving payment details
 
 		// Save payment details to the database
 		PaymentDAO paymentDAO = new PaymentDAO();
 		boolean isSaved = paymentDAO.savePaymentDetails(payment);
+		
+		// After saving payment, now insert the order
+				OrderDAO orderDAO = new OrderDAO();
+				OrderBean order = new OrderBean();
+				order.setCustomerId(userID); // Set the user ID from the session
+				order.setProductId(Integer.parseInt(productId)); // Set the product ID
+				order.setQuantity(1); // You can modify this based on the request (e.g., quantity of products)
+				order.setPrice(paymentAmount); // Use the payment amount (converted to USD)
+				order.setStatus("Completed"); // You can set the order status to "Completed" or other status
+				// Save order to the database
+				boolean isOrderSaved = orderDAO.saveOrder(order);
 
 		out.println("<div class='container'>");
 		out.println("<h3 class='success'>Payment Successful!</h3>");
@@ -297,10 +329,17 @@ p {
 		out.println("<p><strong>Country:</strong> " + billTo.getCountry() + ", <strong>Phone:</strong> "
 				+ billTo.getPhoneNumber() + "</p>");
 		out.println("</div>");
+		
+		// Display order placement message
+		if (isOrderSaved) {
+			out.println("<p>Your order has been placed successfully!</p>");
+		} else {
+			out.println("<p>There was an issue saving your order. Please contact support.</p>");
+		}
 
 		// Button to navigate to the Order History Page
 		out.println(
-				"<button class='button' onclick=\"window.location.href='orderHistory.jsp';\">View Order History</button>");
+				"<button class='button' onclick=\"window.location.href='home.jsp';\">View Order History</button>");
 		out.println("</div>");
 			} else {
 		out.println("<div class='container'><h3 class='error'>Payment Failed</h3>");

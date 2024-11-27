@@ -108,8 +108,8 @@ request.setAttribute("searchQuery", query);
 										alt="${product.productName}">
 									<div class="card-body">
 										<h5 class="card-title">${product.productName}</h5>
-
-										<a
+										<input type="hidden" id="quantity-${product.productId}" name="quantity" value="1">
+										 <a
 											href="paymentsupport.jsp?productId=${product.productId}&amount=${product.price}"
 											class="btn btn-danger"> Buy Now </a>
 									</div>
